@@ -107,23 +107,49 @@ if(!thumbNailFile) throw new ApiError(500, "Error uploading thumbnail")
 
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params
-    //TODO: get video by id
+
     if(!isValidObjectId(videoId)){
-        throw new ApiError(400,"Invalid video Id")
-
+        throw new ApiError(400, "Invalid video Id")
     }
 
-    const video= await Video.findById( videoId)
+    const video = await Video.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner",
+                pipeline: [
+                    {
+                        $project: {
+                            fullname: 1,
+                            username: 1,
+                            avatar: 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $addFields: {
+                owner: {
+                    $first: "$owner"
+                }
+            }
+        }
+    ])
 
-    if(!video){
-        throw new ApiError(400,"Video not found")
-
+    if(!video?.length){
+        throw new ApiError(404, "Video not found")
     }
-    
-    return res.status(200)
-    .json(
-        new Apiresponse(200,video,"video retrived successfully")
 
+    return res.status(200).json(
+        new Apiresponse(200, video[0], "Video retrieved successfully")
     )
 })
 

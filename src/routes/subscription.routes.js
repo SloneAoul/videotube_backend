@@ -15,14 +15,5 @@ router.route("/channel-subscribers/:channelId").get(verifyJWT,getUserChannelSubs
 router.route("/subscribed-channels/:subscriberId").get(verifyJWT,getSubscribedChannels)   
 
 
-
-
-
-
-
-
- 
-
-
     
 export default router
