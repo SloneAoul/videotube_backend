@@ -147,7 +147,8 @@ if(!isPasswordValid){
 
     const options={
         httpOnly:true,
-        secure:true
+        secure:true,
+        sameSite: "none" 
     }
 //coookie has key and value pairs
     return res.status(200)
