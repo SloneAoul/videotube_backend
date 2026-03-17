@@ -1,0 +1,20 @@
+# VideoTube - Backend
+
+REST API for VideoTube platform built with Node.js and Express.
+
+## Tech Stack
+- Node.js
+- Express.js
+- MongoDB + Mongoose
+- JWT Authentication
+- Cloudinary (video/image storage)
+
+## Features
+- User registration, login, JWT auth
+- Video upload, update, delete
+- Comments and likes system
+- Channel and subscription management
+
+## Setup
+npm install
+npm run dev
